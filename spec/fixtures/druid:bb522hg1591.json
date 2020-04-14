@@ -1,0 +1,215 @@
+{
+  "type": "http://cocina.sul.stanford.edu/models/book.jsonld",
+  "externalIdentifier": "druid:bb522hg1591",
+  "label": "Border violence",
+  "version": 1,
+  "access": {
+    "access": "citation-only"
+  },
+  "administrative": {
+    "hasAdminPolicy": "druid:bf569gy6501",
+    "partOfProject": "Google Books"
+  },
+  "description": {
+    "title": [
+      {
+        "value": "Border violence : hearing before the Subcommittee on International Law, Immigration, and Refugees of the Committee on the Judiciary, House of Representatives, One Hundred Third Congress, first session, on H.R. 2119, Immigration Enforcement Review Commission Act, September 29, 1993",
+        "status": "primary"
+      }
+    ]
+  },
+  "identification": {
+    "sourceId": "googlebooks:stanford_36105026894423",
+    "catalogLinks": [
+      {
+        "catalog": "symphony",
+        "catalogRecordId": "2863526"
+      }
+    ]
+  },
+  "structural": {
+    "contains": [
+      {
+        "type": "http://cocina.sul.stanford.edu/models/fileset.jsonld",
+        "externalIdentifier": "bb522hg1591_1",
+        "label": "Page 1",
+        "version": 1,
+        "structural": {
+          "contains": [
+            {
+              "type": "http://cocina.sul.stanford.edu/models/file.jsonld",
+              "externalIdentifier": "druid:bb522hg1591/00000001.html",
+              "label": "00000001.html",
+              "filename": "00000001.html",
+              "size": 966,
+              "version": 1,
+              "hasMimeType": "text/html",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "c4980d27f9358338ce60643525656e6c3d7c231c"
+                },
+                {
+                  "type": "md5",
+                  "digest": "1a8ffd0c470f80f0dab7137f995176b9"
+                }
+              ],
+              "access": {
+                "access": "dark"
+              },
+              "administrative": {
+                "sdrPreserve": true,
+                "shelve": false
+              }
+            },
+            {
+              "type": "http://cocina.sul.stanford.edu/models/file.jsonld",
+              "externalIdentifier": "druid:bb522hg1591/00000001.jp2",
+              "label": "00000001.jp2",
+              "filename": "00000001.jp2",
+              "size": 180486,
+              "version": 1,
+              "hasMimeType": "image/jp2",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "26fab3da5175c9ab329cd3a8663a00fbf50a2ef7"
+                },
+                {
+                  "type": "md5",
+                  "digest": "30225d5157bfd3dc9814a2ba4adcd8bc"
+                }
+              ],
+              "access": {
+                "access": "dark"
+              },
+              "administrative": {
+                "sdrPreserve": true,
+                "shelve": false
+              }
+            },
+            {
+              "type": "http://cocina.sul.stanford.edu/models/file.jsonld",
+              "externalIdentifier": "druid:bb522hg1591/00000001.txt",
+              "label": "00000001.txt",
+              "filename": "00000001.txt",
+              "size": 1,
+              "version": 1,
+              "hasMimeType": "text/plain",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
+                },
+                {
+                  "type": "md5",
+                  "digest": "68b329da9893e34099c7d8ad5cb9c940"
+                }
+              ],
+              "access": {
+                "access": "dark"
+              },
+              "administrative": {
+                "sdrPreserve": true,
+                "shelve": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "http://cocina.sul.stanford.edu/models/fileset.jsonld",
+        "externalIdentifier": "bb522hg1591_2",
+        "label": "Page 2",
+        "version": 1,
+        "structural": {
+          "contains": [
+            {
+              "type": "http://cocina.sul.stanford.edu/models/file.jsonld",
+              "externalIdentifier": "druid:bb522hg1591/00000002.html",
+              "label": "00000002.html",
+              "filename": "00000002.html",
+              "size": 970,
+              "version": 1,
+              "hasMimeType": "text/html",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "a4a2fe4ce5cacc6feee76cb106301751c6b4a74c"
+                },
+                {
+                  "type": "md5",
+                  "digest": "d8c6037dc9c93956499b9f106a08732d"
+                }
+              ],
+              "access": {
+                "access": "dark"
+              },
+              "administrative": {
+                "sdrPreserve": true,
+                "shelve": false
+              }
+            },
+            {
+              "type": "http://cocina.sul.stanford.edu/models/file.jsonld",
+              "externalIdentifier": "druid:bb522hg1591/00000002.jp2",
+              "label": "00000002.jp2",
+              "filename": "00000002.jp2",
+              "size": 8234,
+              "version": 1,
+              "hasMimeType": "image/jp2",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "9e5aac23eff5795307d9a4275b7ae55b144dcf9a"
+                },
+                {
+                  "type": "md5",
+                  "digest": "bfa10fe145f3bc7e757cae31b1ba0995"
+                }
+              ],
+              "access": {
+                "access": "dark"
+              },
+              "administrative": {
+                "sdrPreserve": true,
+                "shelve": false
+              }
+            },
+            {
+              "type": "http://cocina.sul.stanford.edu/models/file.jsonld",
+              "externalIdentifier": "druid:bb522hg1591/00000002.txt",
+              "label": "00000002.txt",
+              "filename": "00000002.txt",
+              "size": 1,
+              "version": 1,
+              "hasMimeType": "text/plain",
+              "hasMessageDigests": [
+                {
+                  "type": "sha1",
+                  "digest": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
+                },
+                {
+                  "type": "md5",
+                  "digest": "68b329da9893e34099c7d8ad5cb9c940"
+                }
+              ],
+              "access": {
+                "access": "dark"
+              },
+              "administrative": {
+                "sdrPreserve": true,
+                "shelve": false
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "hasMemberOrders": [
+      {
+        "viewingDirection": "left-to-right"
+      }
+    ]
+  }
+}
