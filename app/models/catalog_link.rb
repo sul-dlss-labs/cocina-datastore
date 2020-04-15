@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class CatalogLink < ApplicationRecord
-  self.table_name = "catalogLinks"
+  self.table_name = 'catalogLinks'
   belongs_to :identification
 
   # Used to determine identity for item of an array.

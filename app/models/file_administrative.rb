@@ -1,4 +1,6 @@
+# frozen_string_literal: true
+
 class FileAdministrative < ApplicationRecord
-  self.table_name = "fileAdministratives"
+  self.table_name = 'fileAdministratives'
   belongs_to :file, class_name: 'DroFile'
 end

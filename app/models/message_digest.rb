@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class MessageDigest < ApplicationRecord
-  self.table_name = "messageDigests"
+  self.table_name = 'messageDigests'
   belongs_to :file, class_name: 'DroFile'
 
   # Used to determine identity for item of an array.

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ReleaseTag < ApplicationRecord
-  self.table_name = "releaseTags"
+  self.table_name = 'releaseTags'
   belongs_to :administrative
 
   # Used to determine identity for item of an array.

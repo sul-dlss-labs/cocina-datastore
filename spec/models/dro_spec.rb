@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Dro, type: :model do
@@ -8,7 +10,7 @@ RSpec.describe Dro, type: :model do
     json
   end
 
-  let(:dro) { described_class.create_from_hash(json)}
+  let(:dro) { described_class.create_from_hash(json) }
 
   describe '#create_from_hash' do
     it 'is populated' do
@@ -107,9 +109,9 @@ RSpec.describe Dro, type: :model do
     context 'when change values' do
       let(:updated_hash) do
         hash = json.dup
-        hash['type'] = "http://cocina.sul.stanford.edu/models/object.jsonld"
-        hash['externalIdentifier'] = "druid:bb522hg1592"
-        hash['label'] = "Border violencex"
+        hash['type'] = 'http://cocina.sul.stanford.edu/models/object.jsonld'
+        hash['externalIdentifier'] = 'druid:bb522hg1592'
+        hash['label'] = 'Border violencex'
         hash['version'] = 2
         hash['access']['access'] = 'world'
         hash['structural']['hasMemberOrders'][0]['viewingDirection'] = 'right-to-left'
@@ -133,28 +135,26 @@ RSpec.describe Dro, type: :model do
     context 'when remove optional values' do
       let(:updated_hash) do
         {
-            type: "http://cocina.sul.stanford.edu/models/object.jsonld",
-            externalIdentifier: "druid:bb522hg1592",
-            label: "Border violencex",
-            version: 2,
-            access: {}
+          type: 'http://cocina.sul.stanford.edu/models/object.jsonld',
+          externalIdentifier: 'druid:bb522hg1592',
+          label: 'Border violencex',
+          version: 2,
+          access: {}
         }
       end
 
       it 'sets value to nil' do
         expect(dro.access.access).to be_nil
       end
-
-
     end
 
     context 'when remove optional associated models' do
       let(:updated_hash) do
         {
-            type: "http://cocina.sul.stanford.edu/models/object.jsonld",
-            externalIdentifier: "druid:bb522hg1592",
-            label: "Border violencex",
-            version: 2
+          type: 'http://cocina.sul.stanford.edu/models/object.jsonld',
+          externalIdentifier: 'druid:bb522hg1592',
+          label: 'Border violencex',
+          version: 2
         }
       end
 
@@ -173,10 +173,10 @@ RSpec.describe Dro, type: :model do
         hash['structural']['contains'].delete_at(1)
         # Add fileset
         hash['structural']['contains'] << {
-            type: 'http://cocina.sul.stanford.edu/models/fileset.jsonld',
-            externalIdentifier: "bb522hg1591_3",
-            label: "Page 3",
-            version: 1
+          type: 'http://cocina.sul.stanford.edu/models/fileset.jsonld',
+          externalIdentifier: 'bb522hg1591_3',
+          label: 'Page 3',
+          version: 1
         }
         hash
       end
@@ -187,7 +187,6 @@ RSpec.describe Dro, type: :model do
         expect(dro.structural.contains[1].externalIdentifier).to eq('bb522hg1591_3')
       end
     end
-
   end
 
   describe '#to_cocina_model' do

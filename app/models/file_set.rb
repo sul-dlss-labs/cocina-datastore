@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class FileSet < ApplicationRecord
-  self.table_name = "fileSets"
+  self.table_name = 'fileSets'
   # Have to name this droStructural, since there is already an attribute named structural.
   belongs_to :droStructural, class_name: 'DroStructural'
   has_one :structural, dependent: :destroy, class_name: 'FileSetStructural', foreign_key: 'fileSet_id'

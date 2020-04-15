@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Sequence < ApplicationRecord
   # self.table_name = "hasMemberOrders"
   belongs_to :dro_structural, class_name: 'DroStructural', inverse_of: :hasMemberOrders

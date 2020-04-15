@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Dro < ApplicationRecord
   has_one :access, dependent: :destroy, class_name: 'DroAccess'
   has_one :structural, dependent: :destroy, class_name: 'DroStructural'
