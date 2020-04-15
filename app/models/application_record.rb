@@ -28,6 +28,7 @@ class ApplicationRecord < ActiveRecord::Base
         child = self.clazz_for(key).new_from_hash(value)
         # byebug
         puts "Setting hash key for #{self.name}: #{key}, #{child}"
+        # byebug if key == 'structural' && self.name == 'FileSet'
         item.public_send("#{key}=", child)
         # new_hash[key.to_sym] = self.clazz_for(key).create_from_hash(value)
       elsif value.is_a?(Array)
@@ -199,21 +200,15 @@ class ApplicationRecord < ActiveRecord::Base
     # To json only for attributes
     json = self.as_json(only: filtered_attribute_names)
 
-    # Add associations
-    # all_associations.each do |association|
-    #   child = self.public_send(association.name)
-    #   json[association.name.to_s] = child.to_cocina_json
-    # end
     self.class.reflect_on_all_associations(:has_one).each do |association|
       child = self.public_send(association.name)
-      json[association.name.to_s] = child.to_cocina_json
+      json[association.name.to_s] = child.to_cocina_json unless child.nil?
     end
 
     self.class.reflect_on_all_associations(:has_many).each do |association|
       child_json = self.public_send(association.name).map {|child| child.to_cocina_json}
       json[association.name.to_s] = child_json
     end
-
 
     # Remove nils
     json.delete_if {|_key, value| value.nil? }

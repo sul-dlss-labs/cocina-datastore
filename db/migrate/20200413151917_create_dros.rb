@@ -1,6 +1,7 @@
 class CreateDros < ActiveRecord::Migration[6.0]
   def change
-    # TODO: Put unique index on externalIdentifier
+
+    # TODO: administrative, description, identification, geographic
     create_table :dros do |t|
       t.string :type, null: false
       t.string :externalIdentifier, null: false
@@ -10,12 +11,20 @@ class CreateDros < ActiveRecord::Migration[6.0]
       t.index :externalIdentifier, unique: true
     end
 
-    create_table :accesses do |t|
+    create_table :droAccesses do |t|
       t.belongs_to :dro, index: { unique: true }, foreign_key: true
       t.string :access
       t.string :copyright
       t.string :download
       t.string :readLocation
+      t.string :useAndReproductionStatement
+      t.timestamps
+    end
+
+    create_table :embargoes do |t|
+      t.belongs_to :droAccess, index: { unique: true }, foreign_key: true
+      t.datetime :releaseDate, null: false
+      t.string :access, null: false
       t.string :useAndReproductionStatement
       t.timestamps
     end
@@ -42,6 +51,56 @@ class CreateDros < ActiveRecord::Migration[6.0]
       t.integer :version, null: false
       t.timestamps
       t.index [:droStructural_id, :externalIdentifier], unique: true
+    end
+
+    create_table :fileSetStructurals do |t|
+      t.belongs_to :fileSet, index: { unique: true }, foreign_key: true
+      t.timestamps
+    end
+
+    # File doesn't work well as a class name so using droFile.
+    create_table :droFiles do |t|
+      t.belongs_to :fileSetStructural, foreign_key: true
+      t.string :type, null: false
+      t.string :externalIdentifier, null: false
+      t.string :label, null: false
+      t.string :filename
+      t.integer :size, limit: 8
+      t.integer :version, null: false
+      t.string :hasMimeType
+      t.string :use
+      t.timestamps
+      t.index [:fileSetStructural_id, :externalIdentifier], unique: true
+    end
+
+    create_table :messageDigests do |t|
+      t.belongs_to :droFile, foreign_key: true
+      t.string :type, null: false
+      t.string :digest, null: false
+      t.timestamps
+      t.index [:droFile_id, :type], unique: true
+    end
+
+    create_table :accesses do |t|
+      t.belongs_to :droFile, index: { unique: true }, foreign_key: true
+      t.string :access
+      t.string :download
+      t.string :readLocation
+      t.timestamps
+    end
+
+    create_table :fileAdministratives do |t|
+      t.belongs_to :droFile, index: { unique: true }, foreign_key: true
+      t.boolean :sdrPreserve, null: false
+      t.boolean :shelve, null: false
+      t.timestamps
+    end
+
+    create_table :presentations do |t|
+      t.belongs_to :droFile, index: { unique: true }, foreign_key: true
+      t.integer :height
+      t.integer :width
+      t.timestamps
     end
   end
 end

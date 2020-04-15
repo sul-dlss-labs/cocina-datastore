@@ -4,7 +4,11 @@
   "label": "Border violence",
   "version": 1,
   "access": {
-    "access": "citation-only"
+    "access": "citation-only",
+    "embargo": {
+      "releaseDate": "2029-06-22T07:00:00.000+00:00",
+      "access": "world"
+    }
   },
   "administrative": {
     "hasAdminPolicy": "druid:bf569gy6501",
@@ -86,6 +90,10 @@
               "administrative": {
                 "sdrPreserve": true,
                 "shelve": false
+              },
+              "presentation": {
+                "height": 250,
+                "width": 350
               }
             },
             {

@@ -18,17 +18,81 @@ RSpec.describe Dro, type: :model do
       # DRO > Access
       expect(dro.access.access).to eq('citation-only')
 
+      # DRO > Access > embargo
+      expect(dro.access.embargo.access).to eq('world')
+      puts dro.access.embargo.releaseDate
+
       # DRO > Structural > hasMemberOrders
       expect(dro.structural.hasMemberOrders.size).to eq(1)
       expect(dro.structural.hasMemberOrders.first.viewingDirection).to eq('left-to-right')
 
       # DRO > Structural > contains
       expect(dro.structural.contains.size).to eq(2)
+
+      # DRO > Structural > contains > FileSet
       file_set = dro.structural.contains.first
       expect(file_set.type).to eq('http://cocina.sul.stanford.edu/models/fileset.jsonld')
       expect(file_set.externalIdentifier).to eq('bb522hg1591_1')
       expect(file_set.label).to eq('Page 1')
       expect(file_set.version).to eq(1)
+
+      # DRO > Structural > contains > FileSet > Structural > contains
+      expect(file_set.structural.contains.size).to eq(3)
+
+      # DRO > Structural > contains > FileSet > Structural > contains > File
+      file = file_set.structural.contains.first
+      expect(file.type).to eq('http://cocina.sul.stanford.edu/models/file.jsonld')
+      expect(file.externalIdentifier).to eq('druid:bb522hg1591/00000001.html')
+      expect(file.label).to eq('00000001.html')
+      expect(file.size).to eq(966)
+      expect(file.version).to eq(1)
+      expect(file.hasMimeType).to eq('text/html')
+
+      # DRO > Structural > contains > FileSet > Structural > contains > File > hasMessageDigests
+      expect(file.hasMessageDigests.size).to eq(2)
+
+      # DRO > Structural > contains > FileSet > Structural > contains > File > hasMessageDigests > MessageDigest
+      message_digest = file.hasMessageDigests.first
+      expect(message_digest.type).to eq('sha1')
+      expect(message_digest.digest).to eq('c4980d27f9358338ce60643525656e6c3d7c231c')
+
+      # DRO > Structural > contains > FileSet > Structural > contains > File > access
+      expect(file.access.access).to eq('dark')
+
+      # DRO > Structural > contains > FileSet > Structural > contains > File > administrative
+      expect(file.administrative.sdrPreserve).to be true
+      expect(file.administrative.shelve).to be false
+
+      # DRO > Structural > contains > FileSet > Structural > contains > File > presentation
+      image_file = file_set.structural.contains[1]
+      expect(image_file.presentation.height).to eq(250)
+      expect(image_file.presentation.width).to eq(350)
+
+
+        # "type": "http://cocina.sul.stanford.edu/models/file.jsonld",
+      #     "externalIdentifier": "druid:bb522hg1591/00000001.html",
+      #     "label": "00000001.html",
+      #     "filename": "00000001.html",
+      #     "size": 966,
+      #     "version": 1,
+      #     "hasMimeType": "text/html",
+      #     "hasMessageDigests": [
+      #     {
+      #         "type": "sha1",
+      #         "digest": "c4980d27f9358338ce60643525656e6c3d7c231c"
+      #     },
+      #     {
+      #         "type": "md5",
+      #         "digest": "1a8ffd0c470f80f0dab7137f995176b9"
+      #     }
+      # ],
+      #     "access": {
+      #     "access": "dark"
+      # },
+      #     "administrative": {
+      #     "sdrPreserve": true,
+      #     "shelve": false
+      # }
     end
   end
 
