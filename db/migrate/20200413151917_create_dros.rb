@@ -1,7 +1,7 @@
 class CreateDros < ActiveRecord::Migration[6.0]
   def change
 
-    # TODO: administrative, description, identification, geographic
+    # TODO: description
     create_table :dros do |t|
       t.string :type, null: false
       t.string :externalIdentifier, null: false
@@ -102,5 +102,43 @@ class CreateDros < ActiveRecord::Migration[6.0]
       t.integer :width
       t.timestamps
     end
+
+    create_table :administratives do |t|
+      t.belongs_to :dro, index: { unique: true }, foreign_key: true
+      t.string :hasAdminPolicy
+      t.string :partOfProject
+      t.timestamps
+    end
+
+    create_table :releaseTags do |t|
+      t.belongs_to :administrative, foreign_key: true
+      t.string :who
+      t.string :what
+      t.datetime :date
+      t.string :to
+      t.boolean :release, null: false
+      t.timestamps
+    end
+
+    create_table :identifications do |t|
+      t.belongs_to :dro, index: { unique: true }, foreign_key: true
+      t.string :sourceId
+      t.timestamps
+    end
+
+    create_table :catalogLinks do |t|
+      t.belongs_to :identification, foreign_key: true
+      t.string :catalog, null: false
+      t.string :catalogRecordId, null: false
+      t.timestamps
+      t.index [:identification_id, :catalog], unique: true
+    end
+
+    create_table :geographics do |t|
+      t.belongs_to :dro, index: { unique: true }, foreign_key: true
+      t.string :iso19139
+      t.timestamps
+    end
+
   end
 end

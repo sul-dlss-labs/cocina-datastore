@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Dro, type: :model do
   let(:json) do
-    JSON.parse(File.read('spec/fixtures/druid:bb522hg1591.json'))
+    json = JSON.parse(File.read('spec/fixtures/druid:bb522hg1591.json'))
+    # Description not yet handled.
+    json.delete('description')
+    json
   end
 
   let(:dro) { described_class.create_from_hash(json)}
@@ -20,7 +23,33 @@ RSpec.describe Dro, type: :model do
 
       # DRO > Access > embargo
       expect(dro.access.embargo.access).to eq('world')
-      puts dro.access.embargo.releaseDate
+      expect(dro.access.embargo.releaseDate).to eq(Time.zone.parse('Fri, 22 Jun 2029 07:00:00 UTC +00:00'))
+
+      # DRO > Administrative
+      expect(dro.administrative.hasAdminPolicy).to eq('druid:bf569gy6501')
+      expect(dro.administrative.partOfProject).to eq('Google Books')
+
+      # DRO > Administrative > releaseTags
+      expect(dro.administrative.releaseTags.size).to eq(1)
+
+      # DRO > Administrative > releaseTags > ReleaseTag
+      release_tag = dro.administrative.releaseTags.first
+      expect(release_tag.who).to eq('petucket')
+      expect(release_tag.what).to eq('self')
+      expect(release_tag.date).to eq(Time.zone.parse('Fri, 22 Jun 2020 07:00:00 UTC +00:00'))
+      expect(release_tag.to).to eq('Searchworks')
+      expect(release_tag.release).to be true
+
+      # DRO > Identification
+      expect(dro.identification.sourceId).to eq('googlebooks:stanford_36105026894423')
+
+      # DRO > Identification > catalogLinks
+      expect(dro.identification.catalogLinks.size).to eq(1)
+
+      # DRO > Identification > catalogLinks > CatalogLink
+      catalog_link = dro.identification.catalogLinks.first
+      expect(catalog_link.catalog).to eq('symphony')
+      expect(catalog_link.catalogRecordId).to eq('2863526')
 
       # DRO > Structural > hasMemberOrders
       expect(dro.structural.hasMemberOrders.size).to eq(1)
@@ -67,32 +96,6 @@ RSpec.describe Dro, type: :model do
       image_file = file_set.structural.contains[1]
       expect(image_file.presentation.height).to eq(250)
       expect(image_file.presentation.width).to eq(350)
-
-
-        # "type": "http://cocina.sul.stanford.edu/models/file.jsonld",
-      #     "externalIdentifier": "druid:bb522hg1591/00000001.html",
-      #     "label": "00000001.html",
-      #     "filename": "00000001.html",
-      #     "size": 966,
-      #     "version": 1,
-      #     "hasMimeType": "text/html",
-      #     "hasMessageDigests": [
-      #     {
-      #         "type": "sha1",
-      #         "digest": "c4980d27f9358338ce60643525656e6c3d7c231c"
-      #     },
-      #     {
-      #         "type": "md5",
-      #         "digest": "1a8ffd0c470f80f0dab7137f995176b9"
-      #     }
-      # ],
-      #     "access": {
-      #     "access": "dark"
-      # },
-      #     "administrative": {
-      #     "sdrPreserve": true,
-      #     "shelve": false
-      # }
     end
   end
 
@@ -110,6 +113,7 @@ RSpec.describe Dro, type: :model do
         hash['version'] = 2
         hash['access']['access'] = 'world'
         hash['structural']['hasMemberOrders'][0]['viewingDirection'] = 'right-to-left'
+        hash['administrative']['releaseTags'][0]['who'] = 'jlittman'
         hash
       end
 
@@ -121,6 +125,8 @@ RSpec.describe Dro, type: :model do
         expect(dro.access.access).to eq('world')
         expect(dro.structural.hasMemberOrders.size).to eq(1)
         expect(dro.structural.hasMemberOrders.first.viewingDirection).to eq('right-to-left')
+        expect(dro.administrative.releaseTags.size).to eq(1)
+        expect(dro.administrative.releaseTags.first.who).to eq('jlittman')
       end
     end
 
@@ -187,41 +193,11 @@ RSpec.describe Dro, type: :model do
   describe '#to_cocina_model' do
     let(:cocina_dro) { dro.to_cocina_model }
 
-    let(:expected) {
-      {
-        type: "http://cocina.sul.stanford.edu/models/book.jsonld",
-        externalIdentifier: "druid:bb522hg1591",
-        label: "Border violence",
-        version: 1,
-        access: {
-          access: "citation-only"
-        },
-        structural: {
-          hasMemberOrders: [
-            { viewingDirection: 'left-to-right' }
-          ],
-          contains: [
-              {
-                externalIdentifier: "bb522hg1591_1",
-                label: "Page 1",
-                type: "http://cocina.sul.stanford.edu/models/fileset.jsonld",
-                version: 1
-              },
-              {
-                  externalIdentifier: "bb522hg1591_2",
-                  label: "Page 2",
-                  type: "http://cocina.sul.stanford.edu/models/fileset.jsonld",
-                  version: 1
-              }
-          ]
-        }
-      }
-
-    }
+    let(:expected_cocina_dro) { Cocina::Models::DRO.new(json) }
 
     it 'returns a cocina model' do
       expect(cocina_dro).to be_a(Cocina::Models::DRO)
-      expect(cocina_dro.to_h).to eq(expected)
+      expect(cocina_dro.to_json).to eq(expected_cocina_dro.to_json)
     end
   end
 end

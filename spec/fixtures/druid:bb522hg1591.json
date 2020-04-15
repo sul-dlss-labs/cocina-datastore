@@ -12,7 +12,16 @@
   },
   "administrative": {
     "hasAdminPolicy": "druid:bf569gy6501",
-    "partOfProject": "Google Books"
+    "partOfProject": "Google Books",
+    "releaseTags": [
+      {
+        "who": "petucket",
+        "what": "self",
+        "date": "2020-06-22T07:00:00.000+00:00",
+        "to": "Searchworks",
+        "release": true
+      }
+    ]
   },
   "description": {
     "title": [

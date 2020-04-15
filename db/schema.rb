@@ -25,6 +25,25 @@ ActiveRecord::Schema.define(version: 2020_04_13_151917) do
     t.index ["droFile_id"], name: "index_accesses_on_droFile_id", unique: true
   end
 
+  create_table "administratives", force: :cascade do |t|
+    t.bigint "dro_id"
+    t.string "hasAdminPolicy"
+    t.string "partOfProject"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["dro_id"], name: "index_administratives_on_dro_id", unique: true
+  end
+
+  create_table "catalogLinks", force: :cascade do |t|
+    t.bigint "identification_id"
+    t.string "catalog", null: false
+    t.string "catalogRecordId", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["identification_id", "catalog"], name: "index_catalogLinks_on_identification_id_and_catalog", unique: true
+    t.index ["identification_id"], name: "index_catalogLinks_on_identification_id"
+  end
+
   create_table "droAccesses", force: :cascade do |t|
     t.bigint "dro_id"
     t.string "access"
@@ -110,6 +129,22 @@ ActiveRecord::Schema.define(version: 2020_04_13_151917) do
     t.index ["droStructural_id"], name: "index_fileSets_on_droStructural_id"
   end
 
+  create_table "geographics", force: :cascade do |t|
+    t.bigint "dro_id"
+    t.string "iso19139"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["dro_id"], name: "index_geographics_on_dro_id", unique: true
+  end
+
+  create_table "identifications", force: :cascade do |t|
+    t.bigint "dro_id"
+    t.string "sourceId"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["dro_id"], name: "index_identifications_on_dro_id", unique: true
+  end
+
   create_table "messageDigests", force: :cascade do |t|
     t.bigint "droFile_id"
     t.string "type", null: false
@@ -129,6 +164,18 @@ ActiveRecord::Schema.define(version: 2020_04_13_151917) do
     t.index ["droFile_id"], name: "index_presentations_on_droFile_id", unique: true
   end
 
+  create_table "releaseTags", force: :cascade do |t|
+    t.bigint "administrative_id"
+    t.string "who"
+    t.string "what"
+    t.datetime "date"
+    t.string "to"
+    t.boolean "release", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["administrative_id"], name: "index_releaseTags_on_administrative_id"
+  end
+
   create_table "sequences", force: :cascade do |t|
     t.bigint "droStructural_id"
     t.string "viewingDirection"
@@ -139,6 +186,8 @@ ActiveRecord::Schema.define(version: 2020_04_13_151917) do
   end
 
   add_foreign_key "accesses", "\"droFiles\"", column: "droFile_id"
+  add_foreign_key "administratives", "dros"
+  add_foreign_key "catalogLinks", "identifications"
   add_foreign_key "droAccesses", "dros"
   add_foreign_key "droFiles", "\"fileSetStructurals\"", column: "fileSetStructural_id"
   add_foreign_key "droStructurals", "dros"
@@ -146,7 +195,10 @@ ActiveRecord::Schema.define(version: 2020_04_13_151917) do
   add_foreign_key "fileAdministratives", "\"droFiles\"", column: "droFile_id"
   add_foreign_key "fileSetStructurals", "\"fileSets\"", column: "fileSet_id"
   add_foreign_key "fileSets", "\"droStructurals\"", column: "droStructural_id"
+  add_foreign_key "geographics", "dros"
+  add_foreign_key "identifications", "dros"
   add_foreign_key "messageDigests", "\"droFiles\"", column: "droFile_id"
   add_foreign_key "presentations", "\"droFiles\"", column: "droFile_id"
+  add_foreign_key "releaseTags", "administratives"
   add_foreign_key "sequences", "\"droStructurals\"", column: "droStructural_id"
 end
