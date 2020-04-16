@@ -13,7 +13,6 @@ class ApplicationRecord < ActiveRecord::Base
 
       new_hash[key.to_sym] = value
     end
-    # puts "Creating #{self.name} from #{new_hash}"
     item = create!(new_hash)
 
     hash.each do |key, value|
