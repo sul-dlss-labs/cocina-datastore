@@ -10,7 +10,11 @@ RSpec.describe Dro, type: :model do
     json
   end
 
-  let(:dro) { described_class.create_from_hash(json) }
+  let(:dro) { described_class.find_by(externalIdentifier: 'druid:bb522hg1591') }
+
+  before do
+    described_class.create_from_hash(json)
+  end
 
   describe '#create_from_hash' do
     it 'is populated' do

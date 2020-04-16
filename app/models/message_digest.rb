@@ -2,7 +2,7 @@
 
 class MessageDigest < ApplicationRecord
   self.table_name = 'messageDigests'
-  belongs_to :file, class_name: 'DroFile'
+  belongs_to :file, class_name: 'DroFile', foreign_key: 'droFile_id'
 
   # Used to determine identity for item of an array.
   # Perhaps can introspect this from unique indexes, e.g., ActiveRecord::Base.connection.indexes(:table_name)

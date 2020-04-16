@@ -5,12 +5,6 @@ class ApplicationRecord < ActiveRecord::Base
   self.inheritance_column = :inherit_type
 
   def self.create_from_hash(hash)
-    item = new_from_hash(hash)
-    item.save!
-    item
-  end
-
-  def self.new_from_hash(hash)
     new_hash = {}
     hash.each do |key, value|
       # Once everything is modeled, this should go.
@@ -19,26 +13,40 @@ class ApplicationRecord < ActiveRecord::Base
 
       new_hash[key.to_sym] = value
     end
-    item = new(new_hash)
+    # puts "Creating #{self.name} from #{new_hash}"
+    item = create!(new_hash)
 
     hash.each do |key, value|
       # Once everything is modeled, this should go.
       next unless attribute_method?(key)
 
       if value.is_a?(Hash)
-        child = clazz_for(key).new_from_hash(value)
+        # value[join_key(key)] = item.id
+        child = clazz_for(key).create_from_hash(value.merge(Hash[join_key(key), item.id]))
         item.public_send("#{key}=", child)
       elsif value.is_a?(Array)
         collection = item.public_send(key)
-        collection << value.map { |item_value| clazz_for(key).new_from_hash(item_value) }
+        collection << value.map do |item_value|
+          # item_value[join_key(key)] = item.id
+          clazz_for(key).create_from_hash(item_value.merge(Hash[join_key(key), item.id]))
+        end
       end
     end
+    item.save!
 
     item
   end
 
   def update_from_hash(hash)
     new_hash = Hash[filtered_attribute_names.map { |attribute| [attribute.to_sym, nil] }]
+
+    hash.each do |key, value|
+      next unless self.class.attribute_method?(key)
+      next if value.is_a?(Hash) || value.is_a?(Array)
+
+      new_hash[key.to_sym] = value
+    end
+    update(new_hash)
 
     hash.each do |key, value|
       next unless self.class.attribute_method?(key)
@@ -59,23 +67,21 @@ class ApplicationRecord < ActiveRecord::Base
           if collection_item
             collection_item.update_from_hash(item_value)
             matching_collection_items << collection_item
-            new_collection_items << collection_item
           else
-            new_collection_items << clazz.new_from_hash(item_value)
+            # item_value[self.class.join_key(key)] = self.id
+            new_collection_items << clazz.create_from_hash(item_value.merge(Hash[self.class.join_key(key), id]))
           end
         end
         collection = public_send(key)
         collection.each do |collection_item|
+          # byebug if matching_collection_items.include?(collection_item) && key == 'contains'
           collection.destroy(collection_item) unless matching_collection_items.include?(collection_item)
         end
         collection << new_collection_items
-      else
-        new_hash[key.to_sym] = value
       end
     end
 
-    update(new_hash)
-
+    # Remove one-to-ones that are now nil
     self.class.reflect_on_all_associations(:has_one).each do |association|
       next if hash.symbolize_keys.keys.include?(association.name)
 
@@ -85,6 +91,8 @@ class ApplicationRecord < ActiveRecord::Base
       item.destroy!
       public_send("#{association.name}=", nil)
     end
+
+    save!
   end
 
   def to_cocina_json
@@ -133,5 +141,9 @@ class ApplicationRecord < ActiveRecord::Base
   def self.clazz_for(key)
     clazz_name = reflect_on_association(key.to_sym).options[:class_name] || key.camelize.singularize
     clazz_name.constantize
+  end
+
+  def self.join_key(key)
+    reflect_on_association(key.to_sym).join_keys.key
   end
 end

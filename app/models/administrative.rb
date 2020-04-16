@@ -2,5 +2,5 @@
 
 class Administrative < ApplicationRecord
   belongs_to :dro
-  has_many :releaseTags, dependent: :destroy
+  has_many :releaseTags, dependent: :destroy, autosave: true
 end
